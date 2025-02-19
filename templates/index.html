@@ -7,7 +7,10 @@
 </head>
 
 <body>
-    <header></header>
+    <header>
+        <h1>YT - Video Downloader</h1>
+    </header>
+
     <main>
         <section>
             <form method="POST" action="/download">
@@ -24,7 +27,22 @@
             {% endif %}
             {% endwith %}
         </section>
+
+        <!-- Como usar -->
+        <section>
+
+        </section>
+
+        <!-- Sobre -->
+        <section>
+            <h2>Sobre</h2>
+            <p>Este é um projeto open-source desenvolvido por Silas.</p>
+            <p>Doações podem ser feitas através do <a href="{{ url_for('doacoes') }}">doe</a></p>
+        </section>
     </main>
-    <footer></footer>
+
+    <footer>
+        <p>Desenvolvido por <a href="">Silas</a></p>
+    </footer>
 </body>
 </html>

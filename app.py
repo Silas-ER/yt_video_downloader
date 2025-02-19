@@ -17,7 +17,7 @@ def home():
 def download():
     video_url = request.form.get('url')
     if not video_url:
-        flash('Please enter a valid URL', 'error')
+        flash('Por favor insira uma URL válida!', 'error')
         return redirect(url_for('home'))
     try:
         yt = YouTube(video_url)
@@ -28,5 +28,9 @@ def download():
         filename = yt.title + '.mp4'
         return send_file(buffer, as_attachment=True, download_name=filename, mimetype='video/mp4')
     except Exception as e:
-        flash(f'An error occurred while downloading the video, {str(e)}', 'error')
+        flash(f'Ocorreu um erro ao tentar baixar o video, {str(e)}', 'error')
         return redirect(url_for('home'))
+    
+@app.route('/doacoes', methods=['GET'])
+def doacoes():
+    return render_template('doacoes.html')
