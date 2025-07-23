@@ -34,3 +34,6 @@ def download():
 @app.route('/doacoes', methods=['GET'])
 def doacoes():
     return render_template('doacoes.html')
+
+if __name__ == '__main__':
+    app.run(debug=True)
