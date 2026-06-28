@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Sobre - YT Downloader{% endblock %}
+{% block content %}
+
+<div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 md:p-8 space-y-6">
+  <div>
+    <h1 class="text-2xl font-extrabold text-slate-800 mb-2">Sobre o projeto</h1>
+    <p class="text-slate-600">
+      Este é um projeto open-source desenvolvido por
+      <a href="https://github.com/Silas-ER" target="_blank" class="text-red-600 hover:underline">Silas</a>,
+      criado para facilitar o download de vídeos do YouTube de forma simples e rápida.
+    </p>
+  </div>
+
+  <div class="border-t border-slate-100 pt-6">
+    <h2 class="font-bold text-lg text-slate-800 mb-3">💖 Apoie o projeto</h2>
+    <p class="text-slate-600 mb-4">
+      Se este projeto te ajudou, considere fazer uma doação para apoiar o desenvolvimento contínuo.
+    </p>
+
+    <div class="flex flex-col items-center bg-slate-50 rounded-xl border border-slate-200 p-6">
+      <img src="{{ url_for('static', filename='images/qr_code.png') }}" alt="QR Code para doação"
+        class="w-40 h-40 rounded-lg mb-4">
+      <p class="text-sm text-slate-500 mb-2">Carteira (USDT / EVM)</p>
+      <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 max-w-full">
+        <code id="wallet-address" class="text-xs text-slate-700 truncate">0x68cD2f8d5E2D834e428FFEdd7E9ac8E728E3dE77</code>
+        <button id="copy-btn" class="text-red-600 text-xs font-semibold hover:underline shrink-0">Copiar</button>
+      </div>
+      <p id="copy-feedback" class="text-xs text-green-600 mt-2 hidden">Copiado!</p>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('copy-btn').addEventListener('click', () => {
+    const text = document.getElementById('wallet-address').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const feedback = document.getElementById('copy-feedback');
+      feedback.classList.remove('hidden');
+      setTimeout(() => feedback.classList.add('hidden'), 2000);
+    });
+  });
+</script>
+{% endblock %}

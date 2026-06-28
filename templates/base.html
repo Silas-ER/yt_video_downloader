@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}YT - Video Downloader{% endblock %}</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Inter', sans-serif; }
+  </style>
+</head>
+<body class="bg-gradient-to-br from-slate-50 to-slate-100 min-h-screen flex flex-col">
+
+  <nav class="bg-white/80 backdrop-blur border-b border-slate-200 sticky top-0 z-10">
+    <div class="max-w-3xl mx-auto px-4 py-4 flex items-center justify-between">
+      <a href="{{ url_for('home') }}" class="flex items-center gap-2 font-bold text-lg text-slate-800">
+        <span class="bg-red-600 text-white rounded-lg w-8 h-8 flex items-center justify-center text-sm">YT</span>
+        Video Downloader
+      </a>
+      <div class="flex gap-4 text-sm font-medium text-slate-600">
+        <a href="{{ url_for('home') }}" class="hover:text-red-600 transition">Início</a>
+        <a href="{{ url_for('sobre') }}" class="hover:text-red-600 transition">Sobre</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="flex-1 max-w-3xl w-full mx-auto px-4 py-10">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="text-center text-sm text-slate-400 py-6">
+    Desenvolvido por <a href="https://github.com/Silas-ER" target="_blank" class="text-red-600 hover:underline">Silas</a>
+  </footer>
+
+</body>
+</html>
