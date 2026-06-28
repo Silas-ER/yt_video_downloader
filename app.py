@@ -11,16 +11,13 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key")
 
-# Estado dos downloads em andamento, guardado em memória.
-# Em produção com múltiplos workers isso precisaria virar Redis/banco,
-# mas pra um projeto único é suficiente.
 jobs = {}
 jobs_lock = threading.Lock()
 
 
 def get_video_info(url):
     """Busca metadados do vídeo e as opções de qualidade disponíveis."""
-    yt = YouTube(url)
+    yt = YouTube(url, client="WEB")
 
     progressive_streams = (
         yt.streams.filter(progressive=True, file_extension="mp4")
@@ -61,7 +58,7 @@ def run_download(job_id, url, quality):
             jobs[job_id]["progress"] = percent
 
     try:
-        yt = YouTube(url, on_progress_callback=progress_callback)
+        yt = YouTube(url, client="WEB", on_progress_callback=progress_callback)
 
         with jobs_lock:
             jobs[job_id]["status"] = "downloading"
