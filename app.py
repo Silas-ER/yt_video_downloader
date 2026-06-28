@@ -5,11 +5,34 @@ import os
 import uuid
 import threading
 import tempfile
+import base64
 
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "dev-secret-key")
+
+TOKEN_FILE = os.path.join(tempfile.gettempdir(), "pytubefix_oauth_token.json")
+
+
+def setup_oauth_token():
+    """Recria o arquivo de token a partir da env var, se ainda não existir."""
+    if os.path.exists(TOKEN_FILE):
+        return
+
+    encoded_token = os.getenv("YOUTUBE_OAUTH_TOKEN_B64")
+    if not encoded_token:
+        return
+
+    try:
+        token_bytes = base64.b64decode(encoded_token)
+        with open(TOKEN_FILE, "wb") as f:
+            f.write(token_bytes)
+    except Exception as e:
+        print(f"Falha ao restaurar token OAuth: {e}")
+
+setup_oauth_token()
+
 
 jobs = {}
 jobs_lock = threading.Lock()
@@ -17,7 +40,7 @@ jobs_lock = threading.Lock()
 
 def get_video_info(url):
     """Busca metadados do vídeo e as opções de qualidade disponíveis."""
-    yt = YouTube(url)
+    yt = YouTube(url, use_oauth=True, allow_oauth_cache=True, token_file=TOKEN_FILE)
 
     progressive_streams = (
         yt.streams.filter(progressive=True, file_extension="mp4")
@@ -58,7 +81,13 @@ def run_download(job_id, url, quality):
             jobs[job_id]["progress"] = percent
 
     try:
-        yt = YouTube(url, on_progress_callback=progress_callback)
+        yt = YouTube(
+            url,
+            use_oauth=True,
+            allow_oauth_cache=True,
+            token_file=TOKEN_FILE,
+            on_progress_callback=progress_callback,
+        )
 
         with jobs_lock:
             jobs[job_id]["status"] = "downloading"
