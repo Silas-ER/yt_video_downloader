@@ -18,26 +18,45 @@
       Se este projeto te ajudou, considere fazer uma doação para apoiar o desenvolvimento contínuo.
     </p>
 
-    <div class="flex flex-col items-center bg-slate-50 rounded-xl border border-slate-200 p-6">
-      <img src="{{ url_for('static', filename='images/qr_code.png') }}" alt="QR Code para doação"
-        class="w-40 h-40 rounded-lg mb-4">
-      <p class="text-sm text-slate-500 mb-2">Carteira (USDT / EVM)</p>
-      <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 max-w-full">
-        <code id="wallet-address" class="text-xs text-slate-700 truncate">0x68cD2f8d5E2D834e428FFEdd7E9ac8E728E3dE77</code>
-        <button id="copy-btn" class="text-red-600 text-xs font-semibold hover:underline shrink-0">Copiar</button>
+    <div class="grid sm:grid-cols-2 gap-4">
+      <!-- Bitcoin -->
+      <div class="flex flex-col items-center bg-slate-50 rounded-xl border border-slate-200 p-6">
+        <img src="{{ url_for('static', filename='images/btc.png') }}" alt="QR Code Bitcoin"
+          class="w-40 h-40 rounded-lg mb-4">
+        <p class="text-sm text-slate-500 mb-2">Bitcoin (BTC)</p>
+        <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 max-w-full w-full">
+          <code class="wallet-address text-xs text-slate-700 truncate flex-1">bc1qg9am9h0u475le5xm9k07t8y2nd6dthge5mln38</code>
+          <button class="copy-btn text-red-600 text-xs font-semibold hover:underline shrink-0">Copiar</button>
+        </div>
+        <p class="copy-feedback text-xs text-green-600 mt-2 hidden">Copiado!</p>
       </div>
-      <p id="copy-feedback" class="text-xs text-green-600 mt-2 hidden">Copiado!</p>
+
+      <!-- Ethereum -->
+      <div class="flex flex-col items-center bg-slate-50 rounded-xl border border-slate-200 p-6">
+        <img src="{{ url_for('static', filename='images/eth.png') }}" alt="QR Code Ethereum"
+          class="w-40 h-40 rounded-lg mb-4">
+        <p class="text-sm text-slate-500 mb-2">Ethereum (ETH / EVM)</p>
+        <div class="flex items-center gap-2 bg-white border border-slate-200 rounded-lg px-3 py-2 max-w-full w-full">
+          <code class="wallet-address text-xs text-slate-700 truncate flex-1">0x6EDf37707E2AaD39aCd408f7e90F858850bA419c</code>
+          <button class="copy-btn text-red-600 text-xs font-semibold hover:underline shrink-0">Copiar</button>
+        </div>
+        <p class="copy-feedback text-xs text-green-600 mt-2 hidden">Copiado!</p>
+      </div>
     </div>
   </div>
 </div>
 
 <script>
-  document.getElementById('copy-btn').addEventListener('click', () => {
-    const text = document.getElementById('wallet-address').textContent;
-    navigator.clipboard.writeText(text).then(() => {
-      const feedback = document.getElementById('copy-feedback');
-      feedback.classList.remove('hidden');
-      setTimeout(() => feedback.classList.add('hidden'), 2000);
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const card = btn.closest('.flex.flex-col');
+      const text = card.querySelector('.wallet-address').textContent;
+      const feedback = card.querySelector('.copy-feedback');
+
+      navigator.clipboard.writeText(text).then(() => {
+        feedback.classList.remove('hidden');
+        setTimeout(() => feedback.classList.add('hidden'), 2000);
+      });
     });
   });
 </script>
